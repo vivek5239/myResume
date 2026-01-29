@@ -2,6 +2,23 @@ services:
   resume-app:
     image: vivek5239/my-resume:latest
     container_name: my-resume-container
+    networks:
+      - t3_proxy
+      - cloudflare_net
+      - socket_proxy
     ports:
       - "8080:80"
     restart: unless-stopped
+    environment:
+      - PORT=5005
+      - TZ=${TZ:-UTC}
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
+
+networks:
+  cloudflare_net:
+    external: true
+  t3_proxy:
+    external: true
+  socket_proxy:
+    external: true
