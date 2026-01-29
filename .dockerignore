@@ -1,0 +1,7 @@
+node_modules
+.git
+.gitignore
+*.docx
+*.pdf
+*.log
+.DS_Store
