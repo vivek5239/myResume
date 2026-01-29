@@ -1,0 +1,7 @@
+services:
+  resume-app:
+    image: vivek5239/my-resume:latest
+    container_name: my-resume-container
+    ports:
+      - "8080:80"
+    restart: unless-stopped

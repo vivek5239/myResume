@@ -34,7 +34,13 @@ The app is containerized using Docker.
 ### Local Build & Run
 1.  **Build:** `docker build -t resume-app .`
 2.  **Run:** `docker run -p 8080:80 resume-app`
-3.  **Access:** `http://localhost:8080`
+
+### Using Docker Compose
+1.  **Run:** `docker compose up -d`
+2.  **Stop:** `docker compose down`
+
+### Access
+- **URL:** `http://localhost:8080`
 
 ## Customization
 To update content, modify `src/data/resume.ts`. Images should be placed in `public/images`.
