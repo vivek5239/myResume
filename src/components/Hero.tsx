@@ -151,12 +151,13 @@ export const Hero = () => {
           >
             <Mail size={20} /> Contact
           </a>
-          <button
+          <a
+            href="/data/resume.pdf"
+            download="Vivek_Sattanatha_ServiceNow_Resume.pdf"
             className="flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-full font-bold hover:opacity-90 transition-all shadow-[0_0_20px_rgba(var(--primary),0.5)]"
-            onClick={() => window.print()}
           >
             <FileText size={20} /> Resume PDF
-          </button>
+          </a>
         </motion.div>
       </div>
     </section>

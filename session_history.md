@@ -26,3 +26,12 @@
 
 ### Outcome
 A fully functional, polished, and professional resume website ready for deployment.
+
+## 30 January 2026
+
+### Updates
+- **Dynamic Resume PDF:** Implemented a system to update the resume PDF without rebuilding the application.
+    - Created a `/data` directory to host `resume.pdf`.
+    - Updated `docker-compose.yml` to mount `./data` to the container as a read-only volume.
+    - Updated `Hero.tsx` to link to the external data file with a generic download name (`Vivek_Sattanatha_ServiceNow_Resume.pdf`).
+- **Security Hardening:** Ensured the new volume mount is read-only to prevent container-based file modification.
