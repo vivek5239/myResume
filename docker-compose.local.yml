@@ -1,8 +1,0 @@
-services:
-  resume-app:
-    build: .
-    container_name: my-resume-local
-    ports:
-      - "8080:80"
-    volumes:
-      - ./user-data:/usr/share/nginx/html/user-data:ro

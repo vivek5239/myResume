@@ -56,9 +56,9 @@ Open `src/config.ts` to tweak settings:
 
 The app is pre-configured for Docker.
 
-1.  **Build & Run (Local Testing):**
+1.  **Build & Run:**
     ```bash
-    docker compose -f docker-compose.local.yml up -d --build
+    docker compose up -d --build
     ```
 2.  **Visit:** `http://localhost:8080`
 

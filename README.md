@@ -26,17 +26,10 @@ A high-performance, responsive resume website engine. Designed to be a **White-L
 
 ## 🐳 Docker Deployment
 
-### Local / Standard Usage
-```bash
-docker compose -f docker-compose.local.yml up -d --build
-```
-Access at `http://localhost:8080`.
-
-### Production (Vivek's Setup)
-The main `docker-compose.yml` is configured for a specific proxy environment.
 ```bash
 docker compose up -d --build
 ```
+Access at `http://localhost:8080`.
 
 ## 🔒 Security
 
