@@ -88,10 +88,24 @@ To personalize this resume for your own use:
 2.  **Images:** Place your profile photo and other assets in `public/images/`.
 3.  **Themes:** Modify `tailwind.config.js` or `src/index.css` to change the color palette.
 
-## 🔒 Security
+## 🔒 Security & Permissions
 
 *   **Read-Only Volumes:** The data directory is mounted as read-only (`:ro`) in the Docker container, preventing any unauthorized modification of your resume files from within the web server.
 *   **Static Serving:** The app is served via Nginx as static HTML/JS, minimizing the attack surface compared to dynamic backend servers.
+
+### Troubleshooting: Permission Denied on Remote Servers
+
+If you encounter a `Permission denied` error when trying to upload your `resume.pdf` to the data folder on a remote Linux server, it is likely because Docker created the folder as the `root` user.
+
+To fix this securely, run the following commands on your server:
+
+```bash
+# 1. Take ownership of the data folder (replace 'vivek' with your username)
+sudo chown -R vivek:vivek /path/to/your/appdata/resume/data/
+
+# 2. Ensure the PDF file is readable by the web server
+chmod 644 /path/to/your/appdata/resume/data/resume.pdf
+```
 
 ## 📜 License
 
