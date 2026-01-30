@@ -41,6 +41,7 @@ A fully functional, polished, and professional resume website ready for deployme
     - `user-data/`: Runtime assets (PDF, Avatar).
 - **Configuration:** Added `src/config.ts` for app-wide settings and dynamic PDF filename generation.
 - **Documentation:** Created `SETUP.md` for new users.
+- **Release:** Published `v2.0.0` to Docker Hub and GitHub.
 
 ### ⚠️ How to Revert to v1.0.0
 If the v2 update causes issues, you can roll back to the stable v1 release using Docker.
