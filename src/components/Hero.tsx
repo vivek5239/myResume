@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { Github, Linkedin, Mail, FileText, Clock, Award, CheckCircle, Cloud } from 'lucide-react'
 import { resumeData } from '../data/resume'
+import { appConfig } from '../config'
 
 const iconMap: Record<string, any> = {
   Clock,
@@ -47,6 +48,15 @@ const StatCard = ({ stat }: { stat: any }) => {
 }
 
 export const Hero = () => {
+  // Dynamic PDF Filename Logic
+  const getPdfFilename = () => {
+    if (appConfig.pdfDownloadName === 'auto') {
+      const sanitized = resumeData.name.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_]/g, '')
+      return `${sanitized}_Resume.pdf`
+    }
+    return appConfig.pdfDownloadName
+  }
+
   return (
     <section id="home" className="pt-32 pb-16 md:pt-48 md:pb-32 px-4">
       <div className="max-w-7xl mx-auto flex flex-col items-center text-center">
@@ -58,11 +68,12 @@ export const Hero = () => {
         >
           <div className="w-32 h-32 md:w-48 md:h-48 rounded-full overflow-hidden border-4 border-primary shadow-[0_0_30px_rgba(var(--primary),0.5)]">
             <img
-              src="/images/MyPhoto.jpg"
+              src={resumeData.avatarUrl || "/images/MyPhoto.jpg"} 
               alt={resumeData.name}
               className="w-full h-full object-cover"
               onError={(e) => {
-                (e.target as HTMLImageElement).src = 'https://ui-avatars.com/api/?name=Vivek+Sattanatha&size=200';
+                // Fallback to UI Avatars if image fails
+                (e.target as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${encodeURIComponent(resumeData.name)}&size=200`;
               }}
             />
           </div>
@@ -100,28 +111,30 @@ export const Hero = () => {
           ))}
         </div>
 
-        {/* Badges */}
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8 }}
-          className="flex flex-wrap justify-center gap-8 mb-16"
-        >
-          {resumeData.badges.map((badge: string, i: number) => (
-            <motion.div 
-              key={i} 
-              whileHover={{ rotate: [0, -5, 5, 0], scale: 1.15 }}
-              className="h-24 md:h-32 bg-white rounded-2xl p-4 border border-border shadow-md hover:shadow-2xl transition-all"
-            >
-              <img 
-                src={badge} 
-                alt="Badge" 
-                className="h-full w-auto object-contain"
-                onError={(e) => (e.target as HTMLImageElement).style.display = 'none'}
-              />
-            </motion.div>
-          ))}
-        </motion.div>
+        {/* Badges - Conditional Rendering */}
+        {appConfig.ui.showBadges && resumeData.badges && resumeData.badges.length > 0 && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8 }}
+            className="flex flex-wrap justify-center gap-8 mb-16"
+          >
+            {resumeData.badges.map((badge: string, i: number) => (
+              <motion.div 
+                key={i} 
+                whileHover={{ rotate: [0, -5, 5, 0], scale: 1.15 }}
+                className="h-24 md:h-32 bg-white rounded-2xl p-4 border border-border shadow-md hover:shadow-2xl transition-all"
+              >
+                <img 
+                  src={badge} 
+                  alt="Badge" 
+                  className="h-full w-auto object-contain"
+                  onError={(e) => (e.target as HTMLImageElement).style.display = 'none'}
+                />
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -152,8 +165,8 @@ export const Hero = () => {
             <Mail size={20} /> Contact
           </a>
           <a
-            href="/data/resume.pdf"
-            download="Vivek_Sattanatha_ServiceNow_Resume.pdf"
+            href={`${appConfig.userDataPath}/resume.pdf`}
+            download={getPdfFilename()}
             className="flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-full font-bold hover:opacity-90 transition-all shadow-[0_0_20px_rgba(var(--primary),0.5)]"
           >
             <FileText size={20} /> Resume PDF

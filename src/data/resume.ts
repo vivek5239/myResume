@@ -1,6 +1,7 @@
 export const resumeData = {
   name: "Vivek Sattanatha K",
   title: "Senior ServiceNow Solution Architect",
+  avatarUrl: "/user-data/avatar.jpg",
   contact: {
     email: "Vivek.sattanatha@gmail.com",
     phone: "+44-7867019346",

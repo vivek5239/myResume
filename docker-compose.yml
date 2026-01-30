@@ -15,7 +15,7 @@ services:
       - PUID=${PUID:-1000}
       - PGID=${PGID:-1000}
     volumes:
-      - ./data:/usr/share/nginx/html/data:ro
+      - ./user-data:/usr/share/nginx/html/user-data:ro
 
 networks:
   cloudflare_net:
