@@ -1,46 +1,52 @@
-# Technical Documentation - Resume Website
+# Technical Documentation - White-Label Resume Engine
 
 ## Overview
-This is a high-performance, responsive personal portfolio website built with React and TypeScript. It is designed to be purely static for maximum security and ease of hosting.
+This is a high-performance, responsive portfolio website engine built with React and TypeScript. 
+It utilizes a **Hybrid Architecture** that separates compiled content (code/text) from runtime assets (images/PDFs), making it efficiently deployable as a white-label solution.
 
 ## Architecture
+
+### Tech Stack
 - **Frontend:** React 18 (Vite)
+- **Language:** TypeScript
 - **Styling:** Tailwind CSS (Utility-first)
 - **Animations:** Framer Motion
-- **Icons:** Lucide React
 - **Hosting:** Docker (Nginx Alpine)
 
-## Features
-1.  **Dark/Light Mode:** Automatically respects system preferences or user toggle.
-2.  **Responsive Design:** Fully optimized for Mobile, Tablet, and Desktop.
-3.  **Dynamic Experience Timeline:** Fetches company logos using the Clearbit API.
-4.  **Gallery:** Displays professional appreciations and badges in a responsive masonry layout.
-5.  **Security:** Static build with no backend/database interaction, preventing common web exploits.
+### Hybrid Data Strategy
+The application manages data in two distinct ways to optimize for both performance and maintainability:
+
+1.  **Compiled Data (`src/data/resume.ts`)**
+    *   **Content:** Text-based data (Name, Experience, Skills, JSON structure).
+    *   **Mechanism:** Imported directly into the TypeScript bundle at build time.
+    *   **Benefit:** Zero-latency loading, type safety, and optimal SEO.
+    *   **Update Process:** Requires a container rebuild (`npm run build` or `docker compose up --build`).
+
+2.  **Runtime Assets (`/user-data/` Volume)**
+    *   **Content:** Binary files (`resume.pdf`, `avatar.jpg`).
+    *   **Mechanism:** Served via Nginx volume mount.
+    *   **Benefit:** Allows "Hot-Swapping" of files on the server without rebuilding the application.
+    *   **Security:** Mounted as Read-Only (`:ro`) to prevent container-based tampering.
+
+## Configuration System
+The application behavior is controlled by `src/config.ts`:
+- **Dynamic Naming:** Can automatically generate PDF filenames based on the user's name (e.g., `John_Doe_Resume.pdf`).
+- **Theming:** Toggles for default light/dark mode.
+- **Feature Flags:** Ability to hide sections (Badges, Appreciations) if data is missing.
 
 ## Project Structure
 ```
-/src
-  /components     # Modular UI components
-  /data           # Single source of truth for resume content
-  App.tsx         # Main application logic
-  index.css       # Global styles and Tailwind directives
-/public
-  /images         # Profile photos, badges, and appreciations
+/
+├── src/
+│   ├── config.ts       # Global app configuration
+│   ├── components/     # Modular UI components
+│   └── data/           # Content source (resume.ts)
+├── user-data/          # External assets (PDF, Avatar) - Mounted Volume
+├── public/             # Static assets
+└── docker-compose.yml  # Production orchestration
 ```
 
-## Deployment
-The app is containerized using Docker.
-
-### Local Build & Run
-1.  **Build:** `docker build -t resume-app .`
-2.  **Run:** `docker run -p 8080:80 resume-app`
-
-### Using Docker Compose
-1.  **Run:** `docker compose up -d`
-2.  **Stop:** `docker compose down`
-
-### Access
-- **URL:** `http://localhost:8080`
-
-## Customization
-To update content, modify `src/data/resume.ts`. Images should be placed in `public/images`.
+## Security Model
+1.  **Static Serving:** No backend database or server-side logic (PHP/Node) is exposed.
+2.  **Read-Only Volumes:** The `user-data` folder is mounted `:ro`.
+3.  **Permissions:** Detailed guide provided in README for securing server-side folder ownership.

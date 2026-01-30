@@ -29,9 +29,30 @@ A fully functional, polished, and professional resume website ready for deployme
 
 ## 30 January 2026
 
-### Updates
+### v1.0.0 Release (Stable)
 - **Dynamic Resume PDF:** Implemented a system to update the resume PDF without rebuilding the application.
-    - Created a `/data` directory to host `resume.pdf`.
-    - Updated `docker-compose.yml` to mount `./data` to the container as a read-only volume.
-    - Updated `Hero.tsx` to link to the external data file with a generic download name (`Vivek_Sattanatha_ServiceNow_Resume.pdf`).
-- **Security Hardening:** Ensured the new volume mount is read-only to prevent container-based file modification.
+- **Security Hardening:** Ensured volume mounts are read-only (`:ro`).
+- **Tagging:** Published `v1.0.0` to Docker Hub and GitHub.
+
+### v2.0.0 "White-Label" Transformation
+- **Architecture Refactor:** Decoupled the "Engine" from the "Data".
+- **Hybrid Data Model:**
+    - `src/data/resume.ts`: Compiled text content.
+    - `user-data/`: Runtime assets (PDF, Avatar).
+- **Configuration:** Added `src/config.ts` for app-wide settings and dynamic PDF filename generation.
+- **Documentation:** Created `SETUP.md` for new users.
+
+### ⚠️ How to Revert to v1.0.0
+If the v2 update causes issues, you can roll back to the stable v1 release using Docker.
+
+1.  **Edit `docker-compose.yml`**:
+    Change the image tag:
+    ```yaml
+    image: vivek5239/my-resume:v1.0.0
+    ```
+    *(Instead of `:latest`)*
+
+2.  **Redeploy:**
+    ```bash
+    docker compose up -d
+    ```
