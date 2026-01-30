@@ -1,73 +1,98 @@
-# React + TypeScript + Vite
+# Modern Resume & Portfolio - Vivek Sattanatha
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-B73BFE?style=for-the-badge&logo=vite&logoColor=FFD62E)
 
-Currently, two official plugins are available:
+A high-performance, responsive, and visually engaging resume website built with modern web technologies. Designed for easy deployment, scalability, and seamless content updates.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🌟 Key Features
 
-## React Compiler
+*   **Responsive Design:** Fully responsive layout that looks great on mobile, tablet, and desktop.
+*   **Dark/Light Mode:** Built-in theme switcher with persistent preference.
+*   **Interactive UI:** Smooth animations using Framer Motion.
+*   **Dynamic Resume PDF:** Download the latest resume PDF without rebuilding the application.
+*   **Data-Driven:** All content is managed via a single structured data file (`src/data/resume.ts`) for easy updates.
+*   **Dockerized:** Optimized Nginx container for production-grade hosting.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🚀 Getting Started
 
-## Expanding the ESLint configuration
+### Prerequisites
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+*   Node.js (v18+)
+*   npm or yarn
+*   Docker (optional, for containerization)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Local Development
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/vivek5239/myResume.git
+    cd myResume
+    ```
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
+
+3.  **Start the development server:**
+    ```bash
+    npm run dev
+    ```
+    Open `http://localhost:5173` in your browser.
+
+## 🐳 Docker Deployment
+
+This project includes Docker support for easy deployment.
+
+### 1. Local Docker Testing (Recommended for others)
+
+Use the local compose file which is configured for standalone execution without external proxy networks.
+
+```bash
+docker compose -f docker-compose.local.yml up -d --build
+```
+Access the site at `http://localhost:8080`.
+
+### 2. Production Deployment (Custom Setup)
+
+The main `docker-compose.yml` is configured for a specific production environment utilizing external networks (`cloudflare_net`, `t3_proxy`).
+
+```bash
+docker compose up -d --build
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 📄 Managing the Resume PDF
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+One of the key features of this setup is the ability to update the downloadable PDF **without modifying the code or rebuilding the Docker image**.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+1.  **Location:** The app looks for a file named `resume.pdf` inside the `./data` directory in the project root.
+2.  **How to Update:**
+    *   Rename your new resume file to `resume.pdf`.
+    *   Replace the existing file in the `./data` folder.
+    *   The website will immediately serve the new file when users click "Download Resume".
+    *   *Note:* The download filename is masked to a generic name (`Vivek_Sattanatha_ServiceNow_Resume.pdf`) so users always get a professional filename regardless of your internal file naming.
+
+## 🛠️ Customization
+
+To personalize this resume for your own use:
+
+1.  **Content:** Edit `src/data/resume.ts`. This file contains the schema for:
+    *   Profile info
+    *   Experience history
+    *   Skills & Tech stack
+    *   Contact details
+2.  **Images:** Place your profile photo and other assets in `public/images/`.
+3.  **Themes:** Modify `tailwind.config.js` or `src/index.css` to change the color palette.
+
+## 🔒 Security
+
+*   **Read-Only Volumes:** The data directory is mounted as read-only (`:ro`) in the Docker container, preventing any unauthorized modification of your resume files from within the web server.
+*   **Static Serving:** The app is served via Nginx as static HTML/JS, minimizing the attack surface compared to dynamic backend servers.
+
+## 📜 License
+
+[MIT](LICENSE)
